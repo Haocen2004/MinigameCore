@@ -5,16 +5,11 @@ import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -22,8 +17,6 @@ import static org.bukkit.Bukkit.getServer;
 public final class Shuffle implements Listener, CommandExecutor {
 
     private static boolean isStart = false;
-    private static FileConfiguration lang;
-    private List<UUID> playerList = new ArrayList<>();
     private BukkitRunnable mainTask = new Tasks();
 
     @Override
@@ -35,9 +28,8 @@ public final class Shuffle implements Listener, CommandExecutor {
                     isStart = true;
                     mainTask = new Tasks();
                     mainTask.runTaskTimer(Main.getMain(), 20, 20);
-                    playerList.clear();
-                    for (Player player : getServer().getOnlinePlayers()) {
-                        playerList.add(player.getUniqueId());
+                    for (Player p : getServer().getOnlinePlayers()){
+                        p.addScoreboardTag("shuffle_ingame");
                     }
                     result = true;
                 } else if (args[0].equalsIgnoreCase("stop")) {
@@ -45,7 +37,6 @@ public final class Shuffle implements Listener, CommandExecutor {
                     isStart = false;
                     result = true;
                 }
-
             }
         }
         return result;
@@ -54,14 +45,7 @@ public final class Shuffle implements Listener, CommandExecutor {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (isStart) {
-            boolean ingame = false;
-            for (UUID player : playerList) {
-                if (event.getPlayer().getUniqueId().equals(player)) {
-                    ingame = true;
-                    break;
-                }
-            }
-            if (!ingame) event.getPlayer().setGameMode(GameMode.SPECTATOR);
+            if (!event.getPlayer().getScoreboardTags().contains("shuffle_ingame")) event.getPlayer().setGameMode(GameMode.SPECTATOR);
         }
     }
 

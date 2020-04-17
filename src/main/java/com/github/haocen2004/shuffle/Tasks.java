@@ -42,6 +42,7 @@ public class Tasks extends BukkitRunnable {
 
         if (isFirstRun) {
 
+
             getLogger().info("Total " + materials.size() + " blocks");
 
             for (Player player : server.getOnlinePlayers()) {
@@ -77,6 +78,7 @@ public class Tasks extends BukkitRunnable {
             for (PlayerData pd : playerList) {
                 if (pd.isSurvival()) {
                     Player p = server.getPlayer(pd.getUuid());
+                    if (p == null) break;
                     Location location = p.getLocation();
                     Block block = p.getWorld().getBlockAt(location);
                     location.setY(location.getY() - 1);

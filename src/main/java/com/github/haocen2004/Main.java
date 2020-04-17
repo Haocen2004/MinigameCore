@@ -88,7 +88,7 @@ public final class Main extends JavaPlugin implements Listener {
         blockList = (List<String>) blocks.getList("blocks");
         for (String block : blockList) {
             if (!block.startsWith("-")) {
-                materials.add(Material.getMaterial(block));
+                materials.add(Material.getMaterial(block.toUpperCase()));
             }
         }
     }
