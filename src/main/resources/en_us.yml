@@ -1,0 +1,12 @@
+start:
+  block: §2You must find and stand on a %s.
+  found: §6§l%s has found their block!
+  fail: §c§l%s failed to find their block!
+  last1s: §4§lYou have 1 second to stand on your block!
+  last10s: §4§lYou have %s seconds to stand on your block!
+  actionbar:
+    round: §aRound %s
+end:
+  all: §4§lGAME OVER \n§7Everyone failed to find their block.
+  round: §7You have survival for %s rounds.
+reload: §a§6Plugin Reloaded.

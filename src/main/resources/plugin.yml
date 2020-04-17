@@ -1,0 +1,12 @@
+name: MinigameCore
+version: ${project.version}
+main: com.github.haocen2004.Main
+api-version: 1.13
+authors: [Hao_cen]
+commands:
+  shuffle:
+    description: none
+    usage: /shuffle start/stop
+  minigame:
+    description: none
+    usage: /minigame reload
