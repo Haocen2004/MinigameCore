@@ -11,4 +11,4 @@ Block Shuffle
 
 
 # Warning
-I used custom output directory to fast debug so default output is `.\.debug\plugins`
+I use the custom output directory for quick debugging, so the default output is `.\.debug\plugins`
