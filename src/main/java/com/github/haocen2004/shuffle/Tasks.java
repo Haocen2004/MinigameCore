@@ -126,8 +126,12 @@ public class Tasks extends BukkitRunnable {
     }
 
     Material getRandomBlock() {
-        Random r = new Random();
-        return materials.get(r.nextInt(materials.size()));
+        if (materials.size() == 1){
+            return materials.get(0);
+        }else {
+            Random r = new Random();
+            return materials.get(r.nextInt(materials.size()));
+        }
     }
 
     int getSurvival() {

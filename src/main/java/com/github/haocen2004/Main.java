@@ -54,13 +54,13 @@ public final class Main extends JavaPlugin implements Listener {
             if (args[0].equalsIgnoreCase("reload")) {
                 reloadConfig();
                 langConfig = new File(getDataFolder(), getConfig().get("lang") + ".yml");
-                lang = load(langConfig);
-
+                lang = loadLang(langConfig);
+                blocks = load(blockConfig);
                 List<String> blockList = (List<String>) blocks.getList("blocks");
                 materials.clear();
                 for (String block : blockList) {
                     if (!block.startsWith("-")) {
-                        materials.add(Material.getMaterial(block));
+                        materials.add(Material.getMaterial(block.toUpperCase()));
                     }
                 }
 
@@ -97,6 +97,8 @@ public final class Main extends JavaPlugin implements Listener {
     public FileConfiguration loadLang(File file) {
         if (!file.exists()) {
             langConfig = new File(getDataFolder(), "zh_cn.yml");
+            getServer().broadcastMessage("Load failed,use default language zh_cn.");
+            getLogger().warning("Load failed,use default language zh_cn.");
             file = langConfig;
             try {
                 file.createNewFile();

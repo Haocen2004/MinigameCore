@@ -34,7 +34,7 @@ public final class Shuffle implements Listener, CommandExecutor {
                 if (args[0].equalsIgnoreCase("start")) {
                     isStart = true;
                     mainTask = new Tasks();
-                    mainTask.runTaskTimerAsynchronously(Main.getMain(), 20, 20);
+                    mainTask.runTaskTimer(Main.getMain(), 20, 20);
                     playerList.clear();
                     for (Player player : getServer().getOnlinePlayers()) {
                         playerList.add(player.getUniqueId());
