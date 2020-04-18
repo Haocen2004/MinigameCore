@@ -44,7 +44,7 @@ blocks:
 - black_terracotta
 - black_wool
 - blast_furnace
-- blue_banner
+- blubannere_
 - blue_bed
 - blue_concrete
 - blue_concrete_powder
@@ -433,3 +433,5 @@ blocks:
 - yellow_stained_glass_pane
 - yellow_terracotta
 - yellow_wool
+- lava
+- water

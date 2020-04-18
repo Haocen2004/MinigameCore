@@ -1,7 +1,8 @@
 package com.github.haocen2004;
 
+import com.github.haocen2004.assassin.Assassin;
+import com.github.haocen2004.randomray.RandomRay;
 import com.github.haocen2004.shuffle.Shuffle;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -11,9 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
+import static com.github.haocen2004.utils.BlockUtils.loadBlocks;
 import static org.bukkit.Bukkit.*;
 import static org.bukkit.configuration.file.YamlConfiguration.loadConfiguration;
 
@@ -21,9 +21,7 @@ import static org.bukkit.configuration.file.YamlConfiguration.loadConfiguration;
 public final class Main extends JavaPlugin implements Listener {
 
     public static FileConfiguration lang;
-    public static List<Material> materials = new ArrayList<>();
 
-    private static FileConfiguration blocks;
     private static Plugin plugin;
 
     {
@@ -32,7 +30,6 @@ public final class Main extends JavaPlugin implements Listener {
 
     private File mainConfig = new File(getDataFolder(), "config.yml");
     private File langConfig;
-    private File blockConfig = new File(getDataFolder(), "blocks.yml");
 
     @Override
     public void onEnable() {
@@ -40,6 +37,10 @@ public final class Main extends JavaPlugin implements Listener {
         loadConfigs();
         getPluginManager().registerEvents(new Shuffle(), this);
         getPluginCommand("shuffle").setExecutor(new Shuffle());
+        getPluginManager().registerEvents(new RandomRay(), this);
+        getPluginCommand("randomray").setExecutor(new RandomRay());
+        getPluginManager().registerEvents(new Assassin(), this);
+        getPluginCommand("assassin").setExecutor(new Assassin());
     }
 
     @Override
@@ -55,14 +56,7 @@ public final class Main extends JavaPlugin implements Listener {
                 reloadConfig();
                 langConfig = new File(getDataFolder(), getConfig().get("lang") + ".yml");
                 lang = loadLang(langConfig);
-                blocks = load(blockConfig);
-                List<String> blockList = (List<String>) blocks.getList("blocks");
-                materials.clear();
-                for (String block : blockList) {
-                    if (!block.startsWith("-")) {
-                        materials.add(Material.getMaterial(block.toUpperCase()));
-                    }
-                }
+                loadBlocks();
 
                 sender.sendMessage(lang.getString("reload"));
                 return true;
@@ -82,17 +76,8 @@ public final class Main extends JavaPlugin implements Listener {
         reloadConfig();
         langConfig = new File(getDataFolder(), getConfig().get("lang") + ".yml");
         lang = loadLang(langConfig);
-        blocks = load(blockConfig);
-        List<String> blockList = new ArrayList<>();
-        blockList.clear();
-        blockList = (List<String>) blocks.getList("blocks");
-        for (String block : blockList) {
-            if (!block.startsWith("-")) {
-                materials.add(Material.getMaterial(block.toUpperCase()));
-            }
-        }
+        loadBlocks();
     }
-
 
     public FileConfiguration loadLang(File file) {
         if (!file.exists()) {
@@ -111,19 +96,6 @@ public final class Main extends JavaPlugin implements Listener {
         }
         return loadConfiguration(file);
     }
-
-    public FileConfiguration load(File file) {
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-                saveResource(file.getName(), true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return loadConfiguration(file);
-    }
-
 
     public static Plugin getMain() {
         return plugin;

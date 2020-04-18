@@ -1,4 +1,4 @@
-start:
+shuffle:
   block: §2You must find and stand on a %s.
   found: §6§l%s has found their block!
   fail: §c§l%s failed to find their block!
@@ -6,7 +6,12 @@ start:
   last10s: §4§lYou have %s seconds to stand on your block!
   actionbar:
     round: §aRound %s
-end:
-  all: §4§lGAME OVER \n§7Everyone failed to find their block.
+  all: §4§lGAME OVER
   round: §7You have survival for %s rounds.
+assassin:
+  start: §4§l %s is Assassin! RUN!
+  actionbar:
+    player: §a§lYou are looking at the assassin!
+    assassin: §4§You've been spotted by the player!
 reload: §a§6Plugin Reloaded.
+notenoughplayer: §cNot Enough Players!

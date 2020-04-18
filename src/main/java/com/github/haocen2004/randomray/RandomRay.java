@@ -1,4 +1,4 @@
-package com.github.haocen2004.shuffle;
+package com.github.haocen2004.randomray;
 
 import com.github.haocen2004.Main;
 import org.bukkit.GameMode;
@@ -13,23 +13,22 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import static org.bukkit.Bukkit.getServer;
 
-
-public final class Shuffle implements Listener, CommandExecutor {
+public class RandomRay implements Listener, CommandExecutor {
 
     private static boolean isStart = false;
     private BukkitRunnable mainTask = new Task();
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         boolean result = false;
         if (sender.isOp()) {
             if (args.length >= 1) {
                 if (args[0].equalsIgnoreCase("start")) {
                     isStart = true;
                     mainTask = new Task();
-                    mainTask.runTaskTimer(Main.getMain(), 20, 20);
+                    mainTask.runTaskTimer(Main.getMain(), 0, 1);
                     for (Player p : getServer().getOnlinePlayers()){
-                        p.addScoreboardTag("shuffle_ingame");
+                        p.addScoreboardTag("ray_random_ingame");
                     }
                     result = true;
                 } else if (args[0].equalsIgnoreCase("stop")) {
@@ -45,9 +44,9 @@ public final class Shuffle implements Listener, CommandExecutor {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (isStart) {
-            if (!event.getPlayer().getScoreboardTags().contains("shuffle_ingame")) event.getPlayer().setGameMode(GameMode.SPECTATOR);
+            if (!event.getPlayer().getScoreboardTags().contains("ray_random_ingame")) event.getPlayer().setGameMode(GameMode.SPECTATOR);
         } else {
-            event.getPlayer().removeScoreboardTag("shuffle_ingame");
+            event.getPlayer().removeScoreboardTag("ray_random_ingame");
         }
     }
 

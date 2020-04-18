@@ -7,6 +7,12 @@ commands:
   shuffle:
     description: none
     usage: /shuffle start/stop
+  randomray:
+    description: none
+    usage: /randomray start/stop
+  assassin:
+   description: none
+   usage: /assassin start/stop
   minigame:
     description: none
     usage: /minigame reload

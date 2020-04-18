@@ -1,4 +1,4 @@
-start:
+shuffle:
   block: §2你必须找到并站在 %s 上。
   found: §6§l%s 找到了他的方块！
   fail: §c§l%s 没能找到他的方块！
@@ -6,7 +6,12 @@ start:
   last10s: §4§l你还有 %s 秒来站在你的方块上！
   actionbar:
     round: §a第 %s 轮
-end:
   all: §4§l游戏结束
   round: §7你生存了 %s 轮。
+assassin:
+  start: §4§l玩家 %s 被选定为刺客！快逃！
+  actionbar:
+    player: §a§l你正在看着刺客！
+    assassin: §4§l你被玩家发现了！
 reload: §a§6插件已重载
+notenoughplayer: §c玩家数量不足！

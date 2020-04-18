@@ -1,5 +1,7 @@
-package com.github.haocen2004.shuffle;
+package com.github.haocen2004.utils;
 
+import com.github.haocen2004.assassin.Assassin;
+import org.bukkit.Location;
 import org.bukkit.Material;
 
 import java.util.UUID;
@@ -7,13 +9,13 @@ import java.util.UUID;
 public class PlayerData {
     private UUID uuid;
     private Material block;
-    private boolean isSurvival;
+    private boolean isSurvival = true;
     private boolean isChecked = false;
+    private boolean isAssassin = false;
+    private Location lookat;
 
-    public PlayerData(UUID uuid, Material randomBlock) {
+    public PlayerData(UUID uuid) {
         this.uuid = uuid;
-        block = randomBlock;
-        isSurvival = true;
     }
 
     public void setBlock(Material block) {
@@ -42,5 +44,21 @@ public class PlayerData {
 
     public boolean isChecked() {
         return isChecked;
+    }
+
+    public Location getLookat() {
+        return lookat;
+    }
+
+    public void setLookat(Location lookat) {
+        this.lookat = lookat;
+    }
+
+    public void setAss(boolean b) {
+        isAssassin = b;
+    }
+
+    public boolean isAssassin() {
+        return isAssassin;
     }
 }
