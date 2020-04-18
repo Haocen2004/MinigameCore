@@ -8,3 +8,7 @@ Block Shuffle
 /minigame reload
 
 /shuffle start/stop
+
+
+# Warning
+I use the custom output directory for quick debugging, so the default output is `.\.debug\plugins`
