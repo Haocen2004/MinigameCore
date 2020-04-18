@@ -2,7 +2,7 @@
 
 [English](./README.md) | 简体中文
 
-Pluscraft 小游戏插件
+Pluscraft 小游戏插件  
 灵感来自 Dream 的视频
 
 ## 包含的游戏
