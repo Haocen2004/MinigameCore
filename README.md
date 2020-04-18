@@ -1,14 +1,25 @@
 # MinigameCore
-Pluscraft Minigame Plugin
 
-# Include mini game
-Block Shuffle
+English | [简体中文](./README_cn.md)
 
-# Command 
-/minigame reload
+Pluscraft Minigame Plugin  
+Idea from Dream's video  
 
-/shuffle start/stop
+## Include mini game
+* Assassin Killer
+* Block Shuffle
+* Ray Tracing Turn to Random Block
 
+## Command 
+/minigame reload  
+/assassin start/stop  
+/randomray start/stop  
+/shuffle start/stop  
 
-# Warning
-I use the custom output directory for quick debugging, so the default output is `.\.debug\plugins`
+## Environment
+Spigot 1.15.2  
+maybe support lower version `need edit blocks.yml`
+
+## Warning
+I use the custom output directory for quick debugging, so the default output is `.\.debug\plugins`  
+Using Spigot feature do not support normal bukkit server
