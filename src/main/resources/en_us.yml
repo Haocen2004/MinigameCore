@@ -10,6 +10,9 @@ shuffle:
   round: §7You have survival for %s rounds.
 assassin:
   start: §4§l %s is Assassin! RUN!
+  compass:
+    fail: §4Can't find any Player!
+    succeed: §aNearly Player is %s
   actionbar:
     player: §a§lYou are looking at the assassin!
     assassin: §4§You've been spotted by the player!

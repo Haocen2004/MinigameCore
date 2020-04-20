@@ -4,7 +4,6 @@ import com.github.haocen2004.utils.PlayerData;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,12 +16,11 @@ import static com.github.haocen2004.Main.lang;
 import static com.github.haocen2004.assassin.Assassin.*;
 import static com.github.haocen2004.utils.PlayerUtils.getCursorTarget;
 import static com.github.haocen2004.utils.PlayerUtils.getSurvival;
-import static org.bukkit.Bukkit.getLogger;
 import static org.bukkit.Bukkit.getServer;
 
 public class Task extends BukkitRunnable {
 
-    private List<PlayerData> playerList = new ArrayList<>();
+    private final List<PlayerData> playerList = new ArrayList<>();
     private boolean isFirstRun = true;
 
     @Override

@@ -1,7 +1,11 @@
 package com.github.haocen2004.assassin;
 
 import com.github.haocen2004.Main;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,19 +13,21 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import static com.github.haocen2004.Main.lang;
+import static com.github.haocen2004.utils.PlayerUtils.getNearlyPlayer;
 import static org.bukkit.Bukkit.getServer;
 
 public class Assassin implements Listener, CommandExecutor {
@@ -126,9 +132,25 @@ public class Assassin implements Listener, CommandExecutor {
     }
 
     @EventHandler
-    public void onPlayerOpenInventory(InventoryOpenEvent event){
-        if (isSeeAssassin && event.getPlayer().getScoreboardTags().contains("assassin")){
+    public void onPlayerOpenInventory(InventoryOpenEvent event) {
+        if (isSeeAssassin && event.getPlayer().getScoreboardTags().contains("assassin")) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerUsingItem(PlayerInteractEvent event) {
+        if (isSeeAssassin && event.getPlayer().getScoreboardTags().contains("assassin")) {
+            if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                if (event.getItem().getType() == Material.COMPASS) {
+                    Location location = getNearlyPlayer(event.getPlayer());
+                    if (location != null) {
+                        event.getPlayer().setCompassTarget(location);
+                    } else {
+                        event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(lang.getString("assassin.compass.fail")));
+                    }
+                }
+            }
         }
     }
 
