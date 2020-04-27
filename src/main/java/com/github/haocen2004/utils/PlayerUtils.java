@@ -20,8 +20,8 @@ public class PlayerUtils {
         Vector vec = loc.getDirection().multiply(0.15);
         while ((range -= 0.1) > 0 && ((block = loc.getWorld().getBlockAt(loc)).isLiquid() || block.isEmpty())) {
             entities = loc.getWorld().getNearbyEntities(loc.add(vec), 0.001, 0.001, 0.001).iterator();
-            while(entities.hasNext()){
-                if((target = entities.next()) != p){
+            while (entities.hasNext()) {
+                if ((target = entities.next()) != p) {
                     return target;
                 }
             }
@@ -37,7 +37,7 @@ public class PlayerUtils {
         return count;
     }
 
-    public static Location getNearlyPlayer(Player p) {
+    public static Player getNearlyPlayer(Player p) {
         double distance = 0;
         Player nearlyp = null;
         for (Player player : getServer().getOnlinePlayers()) {
@@ -49,8 +49,7 @@ public class PlayerUtils {
                 nearlyp = player;
             }
         }
-        if (nearlyp == null) return null;
-        return nearlyp.getLocation();
+        return nearlyp;
 
     }
 }

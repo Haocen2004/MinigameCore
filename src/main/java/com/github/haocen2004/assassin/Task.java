@@ -4,8 +4,10 @@ import com.github.haocen2004.utils.PlayerData;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -38,10 +40,11 @@ public class Task extends BukkitRunnable {
             }
             PlayerData p = playerList.get(new Random().nextInt(playerList.size()));
             p.setAss(true);
-            server.getPlayer(p.getUuid()).setPlayerListName("§4"+server.getPlayer(p.getUuid()).getName());
-            server.getPlayer(p.getUuid()).setCustomName("§4"+server.getPlayer(p.getUuid()).getName());
+            server.getPlayer(p.getUuid()).setPlayerListName("§4" + server.getPlayer(p.getUuid()).getName());
+            server.getPlayer(p.getUuid()).setCustomName("§4" + server.getPlayer(p.getUuid()).getName());
             server.getPlayer(p.getUuid()).addScoreboardTag("assassin");
-            server.broadcastMessage(lang.getString("assassin.start").replace("%s",  server.getPlayer(p.getUuid()).getName()));
+            server.broadcastMessage(lang.getString("assassin.start").replace("%s", server.getPlayer(p.getUuid()).getName()));
+            server.getPlayer(p.getUuid()).setItemOnCursor(new ItemStack(Material.COMPASS, 1));
             isFirstRun = false;
         }
 

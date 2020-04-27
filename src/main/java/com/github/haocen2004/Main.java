@@ -28,8 +28,9 @@ public final class Main extends JavaPlugin implements Listener {
         plugin = this;
     }
 
-    private File mainConfig = new File(getDataFolder(), "config.yml");
+    private final File mainConfig = new File(getDataFolder(), "config.yml");
     private File langConfig;
+    private final File langConfigDir = new File(getDataFolder().toString() + "\\lang");
 
     @Override
     public void onEnable() {
@@ -54,7 +55,7 @@ public final class Main extends JavaPlugin implements Listener {
         if (sender.isOp()) {
             if (args[0].equalsIgnoreCase("reload")) {
                 reloadConfig();
-                langConfig = new File(getDataFolder(), getConfig().get("lang") + ".yml");
+                langConfig = new File(langConfigDir, getConfig().get("lang") + ".yml");
                 lang = loadLang(langConfig);
                 loadBlocks();
 
@@ -70,25 +71,28 @@ public final class Main extends JavaPlugin implements Listener {
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
         }
+        if (!langConfigDir.exists()) {
+            langConfigDir.mkdir();
+        }
         if (!(mainConfig.exists())) {
             saveDefaultConfig();
         }
         reloadConfig();
-        langConfig = new File(getDataFolder(), getConfig().get("lang") + ".yml");
+        langConfig = new File(langConfigDir, getConfig().getString("lang") + ".yml");
         lang = loadLang(langConfig);
         loadBlocks();
     }
 
     public FileConfiguration loadLang(File file) {
         if (!file.exists()) {
-            langConfig = new File(getDataFolder(), "zh_cn.yml");
+            langConfig = new File(langConfigDir, "zh_cn.yml");
             getServer().broadcastMessage("Load failed,use default language zh_cn.");
             getLogger().warning("Load failed,use default language zh_cn.");
             file = langConfig;
             try {
                 file.createNewFile();
-                saveResource("en_us.yml", true);
-                saveResource("zh_cn.yml", true);
+                saveResource("lang\\en_us.yml", true);
+                saveResource("lang\\zh_cn.yml", true);
             } catch (IOException e) {
                 e.printStackTrace();
             }

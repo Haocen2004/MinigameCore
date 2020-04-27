@@ -4,7 +4,6 @@ import com.github.haocen2004.Main;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -76,7 +75,7 @@ public class Assassin implements Listener, CommandExecutor {
 
     @EventHandler
     public void onAssassinHurt(EntityDamageEvent event){
-        if (event.getEntity().getScoreboardTags().contains("assassin")){
+        if (isSeeAssassin && event.getEntity().getScoreboardTags().contains("assassin")) {
             event.setCancelled(true);
         }
     }
@@ -140,16 +139,21 @@ public class Assassin implements Listener, CommandExecutor {
 
     @EventHandler
     public void onPlayerUsingItem(PlayerInteractEvent event) {
-        if (isSeeAssassin && event.getPlayer().getScoreboardTags().contains("assassin")) {
+        if (event.getPlayer().getScoreboardTags().contains("assassin")) {
             if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                if (event.getItem().getType() == Material.COMPASS) {
-                    Location location = getNearlyPlayer(event.getPlayer());
-                    if (location != null) {
-                        event.getPlayer().setCompassTarget(location);
-                    } else {
-                        event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(lang.getString("assassin.compass.fail")));
+                try {
+                    if (event.getItem().getType() == Material.COMPASS) {
+                        Player nearlyPlayer = getNearlyPlayer(event.getPlayer());
+                        try {
+                            event.getPlayer().setCompassTarget(nearlyPlayer.getLocation());
+                            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(lang.getString("assassin.compass.succeed").replace("%s", nearlyPlayer.getName())));
+                        } catch (Exception ignore) {
+                            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(lang.getString("assassin.compass.fail")));
+                        }
                     }
+                } catch (NullPointerException ignore) {
                 }
+
             }
         }
     }
