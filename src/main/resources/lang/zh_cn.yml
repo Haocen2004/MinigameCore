@@ -14,7 +14,7 @@ assassin:
     succeed: §a最近的玩家是 %s
   start: §4§l玩家 %s 被选定为刺客！快逃！
   actionbar:
-    player: §a§l你正在看着刺客！
+    player: §a§l你发现了刺客！
     assassin: §4§l你被玩家发现了！
 reload: §a§6插件已重载
 notenoughplayer: §c玩家数量不足！
