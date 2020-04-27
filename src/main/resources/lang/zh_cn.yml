@@ -10,7 +10,7 @@ shuffle:
   round: §7你生存了 %s 轮。
 assassin:
   compass:
-    fail: §4无法找到玩家
+    fail: §4无法找到玩家！
     succeed: §a最近的玩家是 %s
   start: §4§l玩家 %s 被选定为刺客！快逃！
   actionbar:
