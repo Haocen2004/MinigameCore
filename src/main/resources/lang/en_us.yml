@@ -8,6 +8,21 @@ shuffle:
     round: §aRound %s
   all: §4§lGAME OVER
   round: §7You have survival for %s rounds.
+  scoreboard:
+    title: Block Shuffle
+    line1: Next Block
+    line2: '%block%'
+    line3:
+    line4: Time Left
+    line5: '%time%'
+    line6:
+    line7: Round
+    line8: '%round%'
+    line9:
+    line10: Players
+    line11: '%player%'
+    line12:
+    line13: '%tag%'
 assassin:
   start: §4§l %s is Assassin! RUN!
   compass:
