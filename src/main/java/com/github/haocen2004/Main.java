@@ -23,6 +23,7 @@ public final class Main extends JavaPlugin implements Listener {
     public static FileConfiguration lang;
 
     private static Plugin plugin;
+    private static String GameTag;
 
     {
         plugin = this;
@@ -52,7 +53,7 @@ public final class Main extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender.isOp()) {
+        if (sender.isOp() && args.length>0) {
             if (args[0].equalsIgnoreCase("reload")) {
                 reloadConfig();
                 langConfig = new File(langConfigDir, getConfig().get("lang") + ".yml");
@@ -62,7 +63,17 @@ public final class Main extends JavaPlugin implements Listener {
                 sender.sendMessage(lang.getString("reload"));
                 return true;
             }
+            if (args[0].equalsIgnoreCase("forcereload")) {
+                saveResource("lang\\en_us.yml", true);
+                saveResource("lang\\zh_cn.yml", true);
+                reloadConfig();
+                langConfig = new File(langConfigDir, getConfig().get("lang") + ".yml");
+                lang = loadLang(langConfig);
+                loadBlocks();
 
+                sender.sendMessage(lang.getString("reload"));
+                return true;
+            }
         }
         return false;
     }
@@ -105,4 +116,11 @@ public final class Main extends JavaPlugin implements Listener {
         return plugin;
     }
 
+    public static void setGameTag(String gameTag) {
+        GameTag = gameTag;
+    }
+
+    public static String getGameTag() {
+        return GameTag;
+    }
 }

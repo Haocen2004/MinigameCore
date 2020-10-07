@@ -8,6 +8,21 @@ shuffle:
     round: §a第 %s 轮
   all: §4§l游戏结束
   round: §7你生存了 %s 轮。
+  scoreboard:
+    title: 方块争夺战
+    line1: 下一个方块
+    line2: '%block%'
+    line3:
+    line4: 剩余时间
+    line5: '%time%'
+    line6:
+    line7: 回合
+    line8: '%round%'
+    line9:
+    line10: 剩余玩家
+    line11: '%player%'
+    line12:
+    line13: '%tag%'
 assassin:
   compass:
     fail: §4无法找到玩家！

@@ -1,3 +1,5 @@
 lang: zh_cn
 shuffle:
   time: 300
+  scoreboard:
+    line: 13

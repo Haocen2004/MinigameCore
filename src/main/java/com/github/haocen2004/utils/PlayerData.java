@@ -1,10 +1,13 @@
 package com.github.haocen2004.utils;
 
+import com.github.haocen2004.Main;
 import com.github.haocen2004.assassin.Assassin;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
 import java.util.UUID;
+
+import static org.bukkit.Bukkit.getServer;
 
 public class PlayerData {
     private UUID uuid;
@@ -13,6 +16,7 @@ public class PlayerData {
     private boolean isChecked = false;
     private boolean isAssassin = false;
     private Location lookat;
+    private ScoreboardUtils board = new ScoreboardUtils(Main.getMain(),getServer().getPlayer(uuid));
 
     public PlayerData(UUID uuid) {
         this.uuid = uuid;
@@ -60,5 +64,9 @@ public class PlayerData {
 
     public boolean isAssassin() {
         return isAssassin;
+    }
+
+    public ScoreboardUtils getBoard() {
+        return board;
     }
 }

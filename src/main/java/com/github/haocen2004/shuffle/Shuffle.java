@@ -11,6 +11,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import static com.github.haocen2004.Main.getGameTag;
+import static com.github.haocen2004.Main.setGameTag;
+import static com.github.haocen2004.utils.TextUtils.getRandomString;
 import static org.bukkit.Bukkit.getServer;
 
 
@@ -25,14 +28,18 @@ public final class Shuffle implements Listener, CommandExecutor {
         if (sender.isOp()) {
             if (args.length >= 1) {
                 if (args[0].equalsIgnoreCase("start")) {
+                    setGameTag("shuffle_"+getRandomString(8));
                     isStart = true;
                     mainTask = new Task();
                     mainTask.runTaskTimer(Main.getMain(), 20, 20);
                     for (Player p : getServer().getOnlinePlayers()){
-                        p.addScoreboardTag("shuffle_ingame");
+                        p.addScoreboardTag(getGameTag());
                     }
                     result = true;
                 } else if (args[0].equalsIgnoreCase("stop")) {
+                    for (Player p : getServer().getOnlinePlayers()){
+                        p.getScoreboardTags().clear();
+                    }
                     mainTask.cancel();
                     isStart = false;
                     result = true;
@@ -45,9 +52,9 @@ public final class Shuffle implements Listener, CommandExecutor {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (isStart) {
-            if (!event.getPlayer().getScoreboardTags().contains("shuffle_ingame")) event.getPlayer().setGameMode(GameMode.SPECTATOR);
+            if (!event.getPlayer().getScoreboardTags().contains(getGameTag())) event.getPlayer().setGameMode(GameMode.SPECTATOR);
         } else {
-            event.getPlayer().removeScoreboardTag("shuffle_ingame");
+            event.getPlayer().getScoreboardTags().clear();
         }
     }
 

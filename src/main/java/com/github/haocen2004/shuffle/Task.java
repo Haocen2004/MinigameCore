@@ -1,7 +1,9 @@
 package com.github.haocen2004.shuffle;
 
 import com.github.haocen2004.Main;
+import com.github.haocen2004.utils.ConfigUtils;
 import com.github.haocen2004.utils.PlayerData;
+import com.github.haocen2004.utils.ScoreboardUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -13,13 +15,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.haocen2004.Main.lang;
+import static com.github.haocen2004.Main.*;
 import static com.github.haocen2004.shuffle.Shuffle.isStart;
 import static com.github.haocen2004.utils.BlockUtils.getRandomBlock;
 import static com.github.haocen2004.utils.BlockUtils.materials;
@@ -34,7 +37,13 @@ public class Task extends BukkitRunnable {
     private int succeed = 0;
     private int second = 0;
     private int round = 0;
-    private int roundSecond = Main.getMain().getConfig().getInt("shuffle.time",300);
+    private int block_l = 0;
+    private int round_l = 0;
+    private int time_l = 0;
+    private int player_l = 0;
+    private FileConfiguration cfg = getMain().getConfig();
+    private final int roundSecond = cfg.getInt("shuffle.time",300);
+
 
     @Override
     public void run() {
@@ -54,6 +63,9 @@ public class Task extends BukkitRunnable {
                 Material block = getRandomBlock(false);
                 PlayerData pd = new PlayerData(player.getUniqueId());
                 pd.setBlock(block);
+
+                getLogger().info(getGameTag());
+
                 playerList.add(pd);
                 TextComponent msg = new TextComponent(lang.getString("shuffle.block").split("%s")[0]);
                 msg.setColor(ChatColor.DARK_GREEN);
@@ -62,9 +74,9 @@ public class Task extends BukkitRunnable {
                 msg.addExtra(itemmsg);
                 try {
                     msg.addExtra(lang.getString("shuffle.block").split("%s")[1]);
-                } catch (Exception ignored) {
-                }
+                } catch (Exception ignored) {}
                 player.spigot().sendMessage(msg);
+                scoreboardSetup(pd);
 
             }
 
@@ -90,12 +102,49 @@ public class Task extends BukkitRunnable {
                     Block block = p.getWorld().getBlockAt(location);
                     location.setY(location.getY() - 1);
                     Block block2 = p.getWorld().getBlockAt(location);
-                    p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(lang.getString("shuffle.actionbar.round").replace("%s", "" + (round + 1))));
-                    if (!pd.isChecked() && (block.getType().equals(pd.getBlock()) || block2.getType().equals(pd.getBlock()))) {
+                    /*
+                    * ====== Shuffle ======1
+                    * Next Block2
+                    * Stone3        2
+                    *4
+                    * Time5
+                    * 60s6          5
+                    *7
+                    * Round8
+                    * 59            8
+                    *10
+                    * Player11
+                    *812            11
+                    *13
+                    * dark grey: GameTag14
+                    * */
+                    Material block3 = pd.getBlock();
+
+                    TextComponent msg = new TextComponent(lang.getString("shuffle.block").split("%s")[0]);
+                    msg.setColor(ChatColor.DARK_GREEN);
+                    TranslatableComponent itemmsg = new TranslatableComponent("block.minecraft." + block3.getKey().getKey());
+                    itemmsg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder("{Count:1b,id:\"" + block3.getKey().getKey() + "\"}").create()));
+                    msg.addExtra(itemmsg);
+                    try {
+                        msg.addExtra(lang.getString("shuffle.block").split("%s")[1]);
+                    } catch (Exception ignored) {}
+                    p.spigot().sendMessage(ChatMessageType.ACTION_BAR, msg);
+                    if (!pd.isChecked() &&(block.getType().equals(pd.getBlock()) || block2.getType().equals(pd.getBlock()))) {
                         pd.setChecked(true);
                         succeed++;
                         getServer().broadcastMessage(lang.getString("shuffle.found").replace("%s", p.getName()));
 
+                    }
+
+                    try{
+                        ScoreboardUtils board = pd.getBoard();
+                        board.setLine(block_l, lang.getString("shuffle.scoreboard.line"+(block_l+1)).replace("%block%",itemmsg.toLegacyText()));
+                        board.setLine(time_l, lang.getString("shuffle.scoreboard.line"+(time_l+1)).replace("%time%",(roundSecond-second)+""));
+                        board.setLine(round_l, lang.getString("shuffle.scoreboard.line"+(round_l+1)).replace("%round%",(round+1)+""));
+                        board.setLine(player_l, lang.getString("shuffle.scoreboard.line"+(player_l+1)).replace("%player%",getSurvival(playerList)+""));
+                    } catch (Exception e){
+                        scoreboardSetup(pd);
+                        e.printStackTrace();
                     }
                 }
             }
@@ -156,6 +205,46 @@ public class Task extends BukkitRunnable {
         }
         round++;
         succeed = 0;
+    }
+
+    void scoreboardSetup(PlayerData pd){
+        getLogger().info("start gen scoreboard");
+        ScoreboardUtils board = pd.getBoard();
+        board.setLine_count(cfg.getInt("shuffle.scoreboard.line"));
+        board.setTitle(lang.getString("shuffle.scoreboard.title"));
+        for (int i = 0; i < cfg.getInt("shuffle.scoreboard.line") ; i++) {
+            int i1 = i+1;
+            getLogger().info("try to get shuffle.scoreboard.line"+i1);
+            String line = lang.getString("shuffle.scoreboard.line"+i1);
+            getLogger().info("get "+line);
+            if(line != null) {
+                if (line.contains("%block%")) {
+                    block_l = i;
+                    getLogger().info(i+"");
+                }
+                if (line.contains("%round%")) {
+                    round_l = i;
+                    getLogger().info(i+"");
+                }
+                if (line.contains("%player%")) {
+                    player_l = i;
+                    getLogger().info(i+"");
+                }
+                if (line.contains("%time%")) {
+                    time_l = i;
+                    getLogger().info(i+"");
+                }
+                if (line.contains("%tag%")) {
+                    String tag = getGameTag();
+                    line = line.replace("%tag%",tag);
+                    getLogger().info("tag replace "+tag);
+                    getLogger().info(line);
+                }
+
+            }
+            board.setLine(i,line);
+        }
+        getServer().getPlayer(pd.getUuid()).setScoreboard(board.board);
     }
 
 }
